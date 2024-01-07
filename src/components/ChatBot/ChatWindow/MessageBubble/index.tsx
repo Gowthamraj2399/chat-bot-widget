@@ -1,5 +1,6 @@
 import React from "react";
 import { Message } from "../../../../services/models";
+import Avatar from "../Avatar";
 
 interface MessageBubbleProps {
   message: Message;
@@ -12,7 +13,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = (props) => {
         props.message.isUser && "flex-row-reverse"
       }`}
     >
-      <div className="p-5 rounded-full bg-red-200"></div>
+      <div className="h-10 w-10 rounded-full bg-red-200">
+        <Avatar userAvatar={props.message.avatar} />
+      </div>
       <div
         className={`flex flex-col w-full max-w-[300px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-xl dark:bg-gray-700 ${
           props.message.isUser ? "rounded-tr-none" : "rounded-tl-none"

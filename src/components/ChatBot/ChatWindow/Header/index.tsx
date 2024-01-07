@@ -1,28 +1,32 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
+import Avatar from "../Avatar";
 
 interface HeaderProps {
   userName: string;
   userAvatar: string;
-  headerColor: string;
   setHideChat: () => void;
+  textColor?: string;
+  headerColor?: string;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <div
-      className={`${props.headerColor} p-3 flex items-center justify-between`}
+      className={`bg-primary p-3 flex items-center justify-between`}
+      style={{ backgroundColor: props.headerColor }}
     >
       {/* Profile section */}
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-full">
-          <img
-            src={props.userAvatar}
-            alt="User Avatar"
-            className="h-full w-full object-cover rounded-full"
-          />
+          <Avatar userAvatar={props.userAvatar} />
         </div>
-        <p className="text-xl font-semibold text-white">{props.userName}</p>
+        <p
+          className="text-xl font-semibold text-white"
+          style={{ color: props.textColor }}
+        >
+          {props.userName}
+        </p>
       </div>
 
       {/* Controls */}
