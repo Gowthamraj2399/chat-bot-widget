@@ -10,7 +10,7 @@ interface SuggestionsBoxProps {
 const SuggestionsBox: React.FC<SuggestionsBoxProps> = (props) => {
   if (!props.suggestions) return null;
   return (
-    <div className="mx-2 p-2">
+    <div className="">
       <div className="flex flex-wrap gap-2 items-center justify-center">
         {props.suggestions.map((suggestion, index) => (
           <div

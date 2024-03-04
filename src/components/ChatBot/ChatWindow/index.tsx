@@ -1,70 +1,65 @@
-import React, { useState } from "react";
-import Header from "./Header";
-import ChatBody from "./ChatBody";
-import MessageSender from "./MessageSender";
-import SuggestionsBox from "./SuggestionsBox";
-import { Message } from "../../../services/models";
-import { suggestions, testSampleMessages } from "../../../services/default";
+import React from 'react';
+import Header from './Header';
+import ChatBody from './ChatBody';
+import MessageSender from './MessageSender';
+import SuggestionsBox from './SuggestionsBox';
+import { Message, UserProfile } from '../model';
 
 interface ChatWindowProps {
+  messages: Message[];
+  inputText: string;
+  userDetails: UserProfile;
+  agentDetails: UserProfile;
+  emojis: any;
+  inputPlaceholder?: string;
+  suggestions?: string[];
   setHideChat: () => void;
+  onInputChange: (event: any) => void;
+  onSend: () => void;
+  onSelectEmoji: (emoji: string, index: number) => void;
+  onClickSuggestion?: (suggestion: string) => void;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
+  messages,
+  inputText,
+  inputPlaceholder,
+  suggestions,
+  userDetails,
+  agentDetails,
+  emojis,
   setHideChat,
+  onClickSuggestion = () => {},
+  onSend,
+  onSelectEmoji,
+  onInputChange,
 }: ChatWindowProps) => {
-  const [sampleMessages, setSampleMessages] =
-    useState<Message[]>(testSampleMessages);
-  const [message, setMessages] = useState<string>("");
-
-  const onChangeMessage = (event: any) => {
-    setMessages(event.target.value);
-  };
-
-  const onClickSuggestion = (suggestion: string) => {
-    const newMessage: Message = {
-      name: "Gowtham",
-      message: suggestion,
-      date: new Date(),
-      isUser: true,
-      avatar:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    };
-    setSampleMessages([...sampleMessages, newMessage]);
-  };
-
-  const onSend = () => {
-    console.log(message);
-    if (message === "") return;
-    const newMessage: Message = {
-      name: "Gowtham",
-      message: message,
-      date: new Date(),
-      isUser: true,
-      avatar:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    };
-    setSampleMessages([...sampleMessages, newMessage]);
-    setMessages("");
-  };
-
   return (
     <div className="absolute lg:bottom-8 lg:right-8">
-      <div className="h-screen w-screen lg:h-[50vh] lg:w-[20vw] flex flex-col border lg:rounded-xl overflow-hidden">
+      <div className="h-screen w-screen lg:h-[60vh] lg:w-[24vw] flex flex-col border lg:rounded-xl overflow-hidden">
         <Header
-          userName="Bonnie Green"
-          userAvatar="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1727&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          userName={agentDetails.name}
+          userAvatar={agentDetails.avatar}
           setHideChat={setHideChat}
         />
-        <ChatBody messages={sampleMessages} />
-        <SuggestionsBox
-          suggestions={suggestions}
-          onSuggestionClick={onClickSuggestion}
-        />
+        <ChatBody
+          emojis={emojis}
+          onSelectEmoji={onSelectEmoji}
+          messages={messages}
+          userDetails={userDetails}
+          agentDetails={agentDetails}
+        >
+          {suggestions && suggestions.length > 0 && (
+            <SuggestionsBox
+              suggestions={suggestions}
+              onSuggestionClick={onClickSuggestion}
+            />
+          )}
+        </ChatBody>
         <MessageSender
-          message={message}
-          onChangeMessage={onChangeMessage}
-          placeholder="Type a message..."
+          inputText={inputText}
+          onInputChange={onInputChange}
+          placeholder={inputPlaceholder}
           onSend={onSend}
         />
       </div>
